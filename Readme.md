@@ -8,6 +8,7 @@ This repository contains source code and a guide to reproduce results using cont
 
 ## Repository Structure
 
+```text
 ct-autoscaler/
 ├── k8s-scripts/  -- folder with Kubernetes manifests and tools required by CT-Autoscaler
 │   ├── controllerPod/ -- manisfests to create controller instance(s)
@@ -16,7 +17,7 @@ ct-autoscaler/
 ├── loadtest/ -- folder with K6 loadtest scripts
 ├── src/ -- folder with CT-Autoscaler source code
 └── README.md
-
+```
 
 ## Requirements
 
