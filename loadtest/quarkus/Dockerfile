@@ -1,0 +1,11 @@
+# Use the official k6 image as a base image
+FROM grafana/k6:latest
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the k6 script into the container
+COPY script-quarkus-vus.js .
+
+# Command to run the k6 script
+CMD ["run", "script-quarkus-vus.js"]

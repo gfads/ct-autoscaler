@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: controller
+  labels:
+    app: controller-system-modeling
+  name: controller-system-modeling
+spec:
+  serviceAccountName: controller-sa
+  containers:
+  - args:
+    - "--setpoint"
+    - "1"
+    - "--adaptionInterval"
+    - "10"
+    - "--minCPU"
+    - "256"
+    - "--maxCPU"
+    - "1024"
+    - "--ki"
+    - "3"
+    - "--kp"
+    - "2"
+    image: controller
+    securityContext:
+      runAsUser: 0
+      privileged: true
+    imagePullPolicy: Never
+    volumeMounts:
+        - name: host-volume
+          mountPath: /mnt/hostpath  # Caminho onde o volume será montado dentro do pod
+    name: controller
+    env:
+    - name: PROPERTY_ADAPT_NAME
+      value: "quarkus.datasource.jdbc.max-size,quarkus.datasource.jdbc.min-size"
+    - name: CONFIGMAP_NAME
+      value: quarkus-cm-app
+    - name: ADAPTION_TYPE
+      value: ApplicationPropertyAdaption
+    - name: PROMETHEUS_HOST
+      value: prometheus.default.svc.cluster.local
+    - name: PROMETHEUS_PORT
+      value: "9090"
+    - name: PROMETHEUS_PROTOCOL
+      value: http
+    - name: OP_MODE
+      value: SystemModeling
+    - name: SERVICES_TO_EXCLUDE
+      value: "frontend-node-port,kubernetes,frontend-external,prometheus-operated,prometheus-operator,prometheus,redis-cart,quarkus-db"
+    - name: CUSTOM_METRIC_PROVIDER_HOST
+      value: custom-metrics-apiserver.controller.svc.cluster.local
+    - name: CUSTOM_METRIC_PROVIDER_PROTOCOL
+      value: http
+    - name: CUSTOM_METRIC_PROVIDER_PORT
+      value: "80"
+    - name: CONTROLLER_TYPE
+      value: "PID"
+    - name: SAMPLES
+      value: "5"
+    - name: PATH_TO_SAVE_MODELING
+      value: "/mnt/hostpath/response-time-modeling-embd.csv"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:
+    - name: host-volume
+      hostPath:
+        path: /mnt/hostpath  # Path on kubernetes node
+        type: DirectoryOrCreate  # Cria o diretório no host, se não existir
+status: {}

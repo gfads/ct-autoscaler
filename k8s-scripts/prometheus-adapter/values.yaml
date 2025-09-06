@@ -1,0 +1,23 @@
+prometheus-adapter:
+  logLevel: 1
+  prometheus:
+    url: http://prometheus.default.svc.cluster.local
+    port: 9090
+
+  rules:
+    default: false
+    custom:
+    #3*scalar(quantile by(server_address) (1, histogram_quantile(0.99, rate(rpc_client_duration_seconds_bucket{server_address="` + service.Name + `"}[1m]))))
+    - seriesQuery: 'rpc_server_duration_seconds_count{k8s_pod_name!="",k8s_namespace_name!=""}'
+      #'{__name__=~"myapplication_api_response_time_.*",namespace!="",pod!=""}'
+      resources:
+        overrides:
+          k8s_pod_name: {resource: "pod"}
+          k8s_namespace_name: {resource: "namespace"}
+      name:
+        matches: "^(.*)_count"
+        as: "${1}_test"
+      metricsQuery: 'scalar(rate(rpc_server_duration_seconds_count[1m]))'
+        #3*scalar((1, histogram_quantile(0.99, rate(rpc_client_duration_seconds_bucket[1m]))))
+        #1000 * (sum(rate(myapplication_api_response_time_sum[5m]) > 0) by (<<.GroupBy>>) / sum(rate(myapplication_api_response_time_count[5m]) > 0) by (<<.GroupBy>>))
+        #helm install prom-adapter prometheus-community/prometheus-adapter --values prometheus-adapter/values.yaml --namespace default

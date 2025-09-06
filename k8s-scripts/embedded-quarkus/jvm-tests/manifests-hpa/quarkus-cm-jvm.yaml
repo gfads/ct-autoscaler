@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quarkus-cm-jvm
+  namespace: default
+data:
+  XMX: "204" #"820" #"204"
+  XMN: "102" #"410" #"102"
+  XMS: "204" #"820" #"204"

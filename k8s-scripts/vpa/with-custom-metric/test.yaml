@@ -1,0 +1,17 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: my-vpa
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-deployment
+  updatePolicy:
+    updateMode: auto
+  resourcePolicy:
+    # ... outras configurações
+  metrics:
+  - type: Custom
+    metricName: my_custom_metric
+    targetAverageUtilization: 80

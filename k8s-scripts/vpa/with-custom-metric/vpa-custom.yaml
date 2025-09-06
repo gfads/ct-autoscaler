@@ -1,0 +1,23 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-frontend
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  updatePolicy: 
+    updateMode: "Auto"
+  metrics:
+  - type: Object
+    object:
+        metric:
+            name: response_time
+        describedObject:
+            apiVersion: v1
+            kind: Service
+            name: frontend
+        target:
+            type: Value
+            value: 5

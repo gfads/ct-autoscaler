@@ -1,0 +1,26 @@
+# this config file contains all config fields with comments
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+# patch the generated kubeadm config with some extra settings
+featureGates:
+  InPlacePodVerticalScaling: true
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 30000
+    listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
+    protocol: tcp # Optional, defaults to tcp
+  - containerPort: 30003
+    hostPort: 30003
+    listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
+    protocol: tcp # Optional, defaults to tcp
+  image:  kindest/node:v1.27.0
+#- role: control-plane
+#  image:  kindest/node:v1.27.0
+- role: worker
+  image:  kindest/node:v1.27.0
+- role: worker
+  image:  kindest/node:v1.27.0
+#- role: worker
+#  image:  kindest/node:v1.27.0

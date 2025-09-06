@@ -1,0 +1,130 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-adservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: adservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-cartservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cartservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-checkoutservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: checkoutservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-currencyservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: currencyservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-emailservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: emailservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-frontend
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-paymentservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: paymentservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-productcatalogservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: productcatalogservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-recommendationservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: recommendationservice
+  updatePolicy:
+    updateMode: Auto
+---
+        
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-shippingservice
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: shippingservice
+  updatePolicy:
+    updateMode: Auto
+---
+        

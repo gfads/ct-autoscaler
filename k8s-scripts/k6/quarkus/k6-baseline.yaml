@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k6-load-quarkus
+  namespace: k6
+spec:
+  template:
+    spec:
+      containers:
+      - name: k6
+        image: baselinetestk6 # Replace with your actual Docker image repository
+        imagePullPolicy: Never
+        env:
+        - name: REQUEST_RATE
+          value: "10" # Set your desired request rate. Per second
+        - name: HOST
+          value: "172.31.28.32" # Set your target host
+        - name: PORT
+          value: "30000" # Set your target port
+      restartPolicy: Never
+  backoffLimit: 0

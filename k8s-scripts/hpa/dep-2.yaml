@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: frontend
+    app.kubernetes.io/managed-by: Helm
+  name: frontend
+  namespace: default
+  resourceVersion: "15652"
+  uid: c88476fd-7506-46c5-ad03-3aaeee379b42
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+      creationTimestamp: null
+      labels:
+        app: frontend
+    spec:
+      securityContext:
+        sysctls:
+            - name: "net.ipv4.tcp_keepalive_time"
+              value: "15"
+      containers:
+      - env:
+        - name: PORT
+          value: "8080"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: productcatalogservice:3550
+        - name: CURRENCY_SERVICE_ADDR
+          value: currencyservice:7000
+        - name: CART_SERVICE_ADDR
+          value: cartservice:7070
+        - name: RECOMMENDATION_SERVICE_ADDR
+          value: recommendationservice:8080
+        - name: SHIPPING_SERVICE_ADDR
+          value: shippingservice:50051
+        - name: CHECKOUT_SERVICE_ADDR
+          value: checkoutservice:5050
+        - name: AD_SERVICE_ADDR
+          value: adservice:9555
+        - name: SHOPPING_ASSISTANT_SERVICE_ADDR
+          value: shoppingassistantservice:80
+        - name: ENV_PLATFORM
+          value: local
+        - name: CYMBAL_BRANDING
+          value: "false"
+        - name: ENABLE_ASSISTANT
+          value: "false"
+        - name: ENABLE_SINGLE_SHARED_SESSION
+          value: "false"
+        image: gcr.io/google-samples/microservices-demo/frontend:v0.10.1
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            httpHeaders:
+            - name: Cookie
+              value: shop_session-id=x-liveness-probe
+            path: /_healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            httpHeaders:
+            - name: Cookie
+              value: shop_session-id=x-readiness-probe
+            path: /_healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      serviceAccount: frontend
+      serviceAccountName: frontend
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2024-10-27T01:05:28Z"
+    lastUpdateTime: "2024-10-27T01:05:48Z"
+    message: ReplicaSet "frontend-64b8f86789" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2024-10-27T01:39:09Z"
+    lastUpdateTime: "2024-10-27T01:39:09Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 5
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

@@ -1,0 +1,300 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: adservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: adservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: adservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cartservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cartservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: cartservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: checkoutservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: checkoutservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: checkoutservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: currencyservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: currencyservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: currencyservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: emailservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: emailservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: emailservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: frontend
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: paymentservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: paymentservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: paymentservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: productcatalogservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: productcatalogservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: productcatalogservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: recommendationservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: recommendationservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: recommendationservice
+      target:
+        type: Value
+        value: 5
+---
+        
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: shippingservice-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: shippingservice
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Object
+    object:
+      metric:
+        name: response_time
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: shippingservice
+      target:
+        type: Value
+        value: 5
+---
+        

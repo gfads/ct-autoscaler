@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: controller
+  labels:
+    app: controller-pod-emb
+  name: controller-pod-emb
+spec:
+  serviceAccountName: controller-sa
+  containers:
+  - args:
+    - "--setpoint"
+    - "1"
+    - "--adaptionInterval"
+    - "30"
+    - "--minCPU"
+    - "128"
+    - "--maxCPU"
+    - "1024"
+    - "--ki"
+    - "-2.9030" #"-510.663"
+    - "--kp"
+    - "-242.0457" #"-628.250"
+    - "--kd"
+    - "0"    #"-114.207"
+    image: controller
+    imagePullPolicy: Never
+    name: controller
+    env:
+    - name: PROPERTY_ADAPT_NAME
+      value: "quarkus.datasource.jdbc.max-size,quarkus.datasource.jdbc.min-size"
+    - name: CONFIGMAP_NAME
+      value: quarkus-cm-app
+    - name: ADAPTION_TYPE
+      value: CPU #ApplicationPropertyAdaption #CPU
+    - name: PROMETHEUS_HOST
+      value: prometheus.default.svc.cluster.local
+    - name: PROMETHEUS_PORT
+      value: "9090"
+    - name: PROMETHEUS_PROTOCOL
+      value: http
+    - name: OP_MODE
+      value: Controller
+    - name: SERVICES_TO_EXCLUDE
+      value: "frontend-node-port,kubernetes,frontend-external,prometheus-operated,prometheus-operator,prometheus,redis-cart,quarkus-db"
+    - name: CUSTOM_METRIC_PROVIDER_HOST
+      value: custom-metrics-apiserver.controller.svc.cluster.local
+    - name: CUSTOM_METRIC_PROVIDER_PROTOCOL
+      value: http
+    - name: CUSTOM_METRIC_PROVIDER_PORT
+      value: "80"
+    - name: CONTROLLER_TYPE
+      value: "PID" #"ratioController" #"PID"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

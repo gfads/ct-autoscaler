@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: quarkus
+  name: quarkus
+  namespace: default
+spec:
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+    nodePort: 30000
+  selector:
+    app: quarkus
+  sessionAffinity: None
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: quarkus
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: "100%"
+      maxUnavailable: "0%"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: quarkus
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: quarkus
+          image: smarttuning/rest-crud-quarkus-native:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: quarkus.datasource.jdbc.url
+              value: jdbc:postgresql://quarkus-db.default.svc.cluster.local/rest-crud
+          envFrom:
+          - configMapRef:
+              name: quarkus-cm-app
+          - configMapRef:
+              name: quarkus-cm-jvm
+          # avoid sending requests if it already restarted
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 15
+          startupProbe:
+            httpGet:
+              port: 8080
+              path: /
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "128m"
+            limits:
+              memory: "256Mi"
+              cpu: "128m"
